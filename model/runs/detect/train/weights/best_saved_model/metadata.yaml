@@ -1,0 +1,30 @@
+description: Ultralytics best model trained on ./TACO.yaml
+author: Ultralytics
+license: AGPL-3.0 https://ultralytics.com/license
+date: '2024-02-25T02:23:22.411835'
+version: 8.1.18
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 352
+- 352
+names:
+  0: Aluminium foil
+  1: Bottle cap
+  2: Bottle
+  3: Broken glass
+  4: Can
+  5: Carton
+  6: Cigarette
+  7: Cup
+  8: Lid
+  9: Other litter
+  10: Other plastic
+  11: Paper
+  12: Plastic bag - wrapper
+  13: Plastic container
+  14: Pop tab
+  15: Straw
+  16: Styrofoam piece
+  17: Unlabeled litter
