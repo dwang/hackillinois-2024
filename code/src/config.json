@@ -10,7 +10,8 @@
     "show_preview": false
   },
   "object_detection": {
-    "model_path": ""
+    "model_path": "./model_full_integer_quant_edgetpu.tflite",
+    "image_size": [352, 352]
   },
   "distance_sensors": [
     {

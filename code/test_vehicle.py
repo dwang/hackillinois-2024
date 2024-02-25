@@ -12,21 +12,25 @@ if __name__ == "__main__":
         }
     )
 
-    # print("Forward")
-    # vehicle.drive_forward(1)
-    # time.sleep(3)
-
-    # print("Stop")
-    # vehicle.stop()
     # time.sleep(1)
+    # try:
+    #     for x in range(31):
+    #         print("Pivot Left")
+    #         vehicle.pivot_right(0.8)
+    #         time.sleep(0.1)
+    #         vehicle.stop()
+    #         time.sleep(0.5)
+    # except KeyboardInterrupt:
+    #     vehicle.stop()
 
-    print("Pivot Left")
-    vehicle.pivot_left(1)
-    time.sleep(2)
 
-    print("Pivot Right")
-    vehicle.pivot_right(1)
-    time.sleep(2)
+
+    #     print("Pivot Right")
+    for x in range(30):
+        vehicle.drive_forward(0.6)
+        time.sleep(0.1)
+        vehicle.stop()
+        time.sleep(0.1)
 
     # print("Stop")
     # vehicle.stop()

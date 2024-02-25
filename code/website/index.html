@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hackillinois 2024 LiveStream and OpenStreetMap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        #livestream,
+        #map {
+            width: 50%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="livestream">
+        <!-- Embed your livestream video here. Example using a placeholder image -->
+        <iframe src="http://hackilpi3:5000/stream" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Function to fetch data from your API and add markers
+        function fetchAndPlotMarkers() {
+            fetch('http://127.0.0.1:5000/api/pictureitem')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    data.forEach(item => {
+                        console.log(item.coordinates);
+                        var coords = item.coordinates.split(','); // Assuming coordinates are returned as "lat,lng"
+                        var lat = parseFloat(coords[0]);
+                        var lng = parseFloat(coords[1]);
+                        if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                            var marker = L.marker([lat, lng]).addTo(map);
+                            marker.bindPopup(`<b>Timestamp:</b> ${item.timestamp}<br><b>Items:</b> ${item.number_of_items}`).openPopup();
+                            console.log("marker placed");
+                        } else {
+                            console.error('Invalid coordinates:', item.coordinates);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Call the function to fetch data and add markers
+        fetchAndPlotMarkers();
+    </script>
+
+</body>
+
+</html>

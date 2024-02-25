@@ -8,6 +8,7 @@ from .. import (
     switch as switch_module,
 )
 import time
+import threading
 
 
 class Config(TypedDict):
@@ -26,6 +27,8 @@ class Brain:
     leds: list[led_module.LED]
     sample_hz: int
     loop_counter: int
+    t: threading.Thread
+    lock: threading.Lock
 
     def __init__(
         self,
@@ -49,6 +52,18 @@ class Brain:
         self.sample_hz = config["sample_hz"]
         self.loop_counter = 0
 
+        self.lock = threading.Lock()
+        self.t = threading.Thread(target=self.inference)
+        self.t.start()
+
+
+
+    def inference(self):
+        while True:
+            with self.lock:
+                self.camera.capture()
+                self.object_detection.predict(self.camera.image_array)
+
     def logic(self):
         """Process sensor data, tell the vehicle how to drive"""
         pass
@@ -59,10 +74,18 @@ class Brain:
         while self.running:
             start_loop_time = time.time()
 
-            self.camera.capture()
+            self.leds[1].on()
+            if self.loop_counter % 2 == 0:
+                self.leds[0].on()
+            else:
+                self.leds[0].off()
+
             self.logic()
 
             # ensure that the loop is running at the correct max frequency
             time.sleep(max(0, 1 / self.sample_hz - (time.time() - start_loop_time)))
 
             self.loop_counter += 1
+
+        self.leds[0].off()
+        self.leds[1].off()

@@ -2,7 +2,6 @@ from . import base
 import time
 
 
-
 class Config(base.Config):
     pass
 
@@ -18,12 +17,13 @@ class Brain(base.Brain):
     timesleft = 0
     movetime = 0
     centered = False
+    currnum = 1
 
     def turn7p5right(self):
         print("turning 7.5 degrees right")
         # self.vehicle.onlyrightb(0.3)
         self.vehicle.pivot_right(0.8)
-        #time.sleep(0.02)
+        # time.sleep(0.02)
         # self.vehicle.onlyright(0.5)
         time.sleep(0.1)
         self.vehicle.stop()
@@ -34,19 +34,23 @@ class Brain(base.Brain):
         # self.vehicle.onlyleftb(0.3)
         # time.sleep(0.02)
         # self.vehicle.onlyleft(0.8)
-        time.sleep(0.15)
+        time.sleep(0.12)
         self.vehicle.stop()
 
     def movetowards(self):
         print("GOOOO")
         print("times right " + str(self.timesright))
         print("times left " + str(self.timesleft))
-        while  self.distance_sensors[1].distance > 0.07:
-            self.vehicle.drive_forward()
+        while self.distance_sensors[1].distance > 0.10:
+            self.vehicle.drive_forward(0.6)
+            time.sleep(0.1)
+            self.vehicle.stop()
             time.sleep(0.1)
             self.movetime += 1
         while self.movetime > 0:
-            self.vehicle.drive_backward()
+            self.vehicle.drive_backward(0.6)
+            time.sleep(0.1)
+            self.vehicle.stop()
             time.sleep(0.1)
             self.movetime -= 1
         while (self.timesright) > 0:
@@ -60,43 +64,48 @@ class Brain(base.Brain):
 
     def centertrash(self, x):
         print("running centering thing")
-        if (
-            x > self.picwidth / 2 - 40
-            and x < self.picwidth / 2 + 40
-        ) or (self.timesright != 0 and self.timesleft != 0):
-            if (self.timesright != 0 and self.timesleft != 0):
+        if (x > self.picwidth / 2 - 45 and x < self.picwidth / 2 + 45) or (
+            self.timesright != 0 and self.timesleft != 0
+        ):
+            if self.timesright != 0 and self.timesleft != 0:
                 self.timesright -= 1
                 self.timesleft -= 1
 
             self.centered = True
         if x < self.picwidth / 2 - 40:
-            
             self.turn7p5left()
             self.timesleft += 1
         if x > self.picwidth / 2 + 40:
-            
+
             self.turn7p5right()
             self.timesright += 1
-           
 
     def logic(self):
-        results = self.object_detection.predict(self.camera.image_array)
-        if self.distance_sensors[0].distance < 0.1 and self.distance_sensors[1].distance < 0.1:
+        """If anything is detected by the distance_sensors, stop the car"""
+        if (
+            self.distance_sensors[0].distance < 0.1
+            and self.distance_sensors[1].distance < 0.1
+        ):
             print("WALLL")
             self.running = False
-        if results and results[0].boxes:
-            """If anything is detected by the distance_sensors, stop the car"""
-            results[0].save(filename='result.jpg')
-            if results and results[0].boxes:
-                x, y, w, h = results[0].boxes.xywh.tolist()[0]
-                print(x,y,w,h)
+
+        if self.centered:
+            if self.movetowards():
+                print("done collect")
+
+        with self.lock:
+            if self.object_detection.prediction:
+                x, _, _, _ = self.object_detection.prediction.boxes.xywh.tolist()[0]
                 self.centertrash(x)
-            if self.centered:
-                if self.movetowards():
-                    print("done collect")
-        else:
-            print("trying to mvoe")
-            self.vehicle.drive_forward()
-            time.sleep(0.5)
-            self.vehicle.stop()
-        time.sleep(2)
+            else:
+                if self.currnum % 31 == 0:
+                    print("trying to mvoe")
+                    self.vehicle.drive_forward()
+                    time.sleep(0.5)
+                    self.vehicle.stop()
+                else:
+                    self.vehicle.pivot_right(0.8)
+                    time.sleep(0.1)
+                    self.vehicle.stop()
+                self.currnum += 1
+        time.sleep(1)

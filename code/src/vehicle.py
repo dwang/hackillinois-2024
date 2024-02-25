@@ -2,7 +2,7 @@ from typing import TypedDict
 from . import motor
 
 # The two motors run at different speeds with the same PWM signal, so we throttle the left motor manually.
-LEFT_MOTOR_SCALE = 0.77877
+LEFT_MOTOR_SCALE = 0.78
 
 
 class MotorsConfig(TypedDict):
@@ -21,8 +21,8 @@ class Vehicle:
 
     def __init__(self, config: Config):
 
-        self.left_motor = motor.Motor(config['motors']['left'])
-        self.right_motor = motor.Motor(config['motors']['right'])
+        self.left_motor = motor.Motor(config["motors"]["left"])
+        self.right_motor = motor.Motor(config["motors"]["right"])
 
     def stop(self) -> None:
         """stop both motors"""
@@ -61,7 +61,13 @@ class Vehicle:
     def onlyleftb(self, speed: float = 1.0) -> None:
         self.right_motor.backward(speed)
 
-    def drive(self, left_speed: float, left_direction: bool, right_speed: float, right_direction: bool) -> None:
+    def drive(
+        self,
+        left_speed: float,
+        left_direction: bool,
+        right_speed: float,
+        right_direction: bool,
+    ) -> None:
         """Control each motor's speed and direction independently"""
 
         self.left_motor.drive(left_speed, left_direction)
