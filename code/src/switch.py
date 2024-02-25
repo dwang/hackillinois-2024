@@ -13,7 +13,7 @@ class Switch(Button):
     """child class of gpiozero.Button"""
 
     def __init__(self, config: Config):
-        super().__init__(config['pin'])
+        super().__init__(config["pin"])
         self.state = False
         self.when_released = self.switch_state
 

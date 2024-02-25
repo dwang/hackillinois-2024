@@ -23,9 +23,9 @@ class Motor:
 
     def __init__(self, config: Config):
 
-        self.pwm = PWMLED(config['pins']['speed'])
-        self.control1 = LED({'pin': config['pins']['control1']})
-        self.control2 = LED({'pin': config['pins']['control2']})
+        self.pwm = PWMLED(config["pins"]["speed"])
+        self.control1 = LED({"pin": config["pins"]["control1"]})
+        self.control2 = LED({"pin": config["pins"]["control2"]})
 
     def stop(self) -> None:
         """Stop the motor"""

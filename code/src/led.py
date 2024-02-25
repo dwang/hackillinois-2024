@@ -11,7 +11,7 @@ class LED:
     pin: int
 
     def __init__(self, config: Config):
-        self.pin = config['pin']
+        self.pin = config["pin"]
         GPIO.setup(self.pin, GPIO.OUT)
 
     def on(self):

@@ -9,6 +9,9 @@
   "camera": {
     "show_preview": false
   },
+  "object_detection": {
+    "model_path": ""
+  },
   "distance_sensors": [
     {
       "pins": {

@@ -18,11 +18,10 @@ class Camera:
 
         try:
             self.cam = Picamera2()
-            self.cam.start(show_preview=config['show_preview'])
+            self.cam.start(show_preview=config["show_preview"])
         except:
             self.cam = None
 
     def capture(self):
-
         if self.cam != None:
             self.image_array = self.cam.capture_array()
