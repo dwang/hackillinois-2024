@@ -18,7 +18,11 @@ class Camera:
 
         try:
             self.cam = Picamera2()
-            self.cam.start(show_preview=config['show_preview'])
+            camera_config = self.cam.create_still_configuration(
+                main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores"
+            )
+            self.cam.configure(camera_config)
+            self.cam.start(show_preview=config["show_preview"])
         except:
             self.cam = None
 

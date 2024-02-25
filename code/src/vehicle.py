@@ -28,7 +28,7 @@ class Vehicle:
 
     def drive_forward(self, speed: float = 1.0) -> None:
         """turn both motors forward at a given speed"""
-        self.left_motor.forward(speed)
+        self.left_motor.forward(speed*0.77877)
         self.right_motor.forward(speed)
 
     def drive_backward(self, speed: float = 1.0) -> None:
@@ -44,6 +44,18 @@ class Vehicle:
     def pivot_right(self, speed: float = 1.0) -> None:
         """at the same speed, drive the left motor forward, and the right motor backward"""
         self.left_motor.forward(speed)
+        self.right_motor.backward(speed)
+    
+    def onlyright(self, speed: float = 1.0) -> None:
+        self.left_motor.forward(speed)
+    
+    def onlyleft(self, speed: float = 1.0) -> None:
+        self.right_motor.forward(speed)
+
+    def onlyrightb(self, speed: float = 1.0) -> None:
+        self.left_motor.backward(speed)
+    
+    def onlyleftb(self, speed: float = 1.0) -> None:
         self.right_motor.backward(speed)
 
     def drive(self, left_speed: float, left_direction: bool, right_speed: float, right_direction: bool) -> None:

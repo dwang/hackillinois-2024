@@ -29,15 +29,15 @@ if __name__ == '__main__':
 
     for speed in speeds:
         print('Motor forward at {}% speed'.format(speed * 100))
-        motor1.forward(speed)
+        motor1.forward(speed*0.77877)
         motor2.forward(speed)
         time.sleep(dt)
 
-    for speed in speeds:
-        print('Motor backward at {}% speed'.format(speed * 100))
-        motor1.backward(speed)
-        motor2.backward(speed)
-        time.sleep(dt)
+    # for speed in speeds:
+    #     print('Motor backward at {}% speed'.format(speed * 100))
+    #     motor1.backward(speed)
+    #     motor2.backward(speed)
+    #     time.sleep(dt)
 
     motor1.stop()
     motor2.stop()

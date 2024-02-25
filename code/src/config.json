@@ -7,7 +7,7 @@
     "autonomous": {}
   },
   "camera": {
-    "show_preview": false
+    "show_preview": true
   },
   "distance_sensors": [
     {
