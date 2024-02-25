@@ -2,7 +2,7 @@ train: train/images
 val: valid/images
 test: test/images
 
-nc: 15
+nc: 18
 names:
   [
     "Aluminium foil",
@@ -11,12 +11,15 @@ names:
     "Broken glass",
     "Can",
     "Carton",
+    "Cigarette",
     "Cup",
+    "Lid",
     "Other litter",
     "Other plastic",
     "Paper",
     "Plastic bag - wrapper",
     "Plastic container",
+    "Pop tab",
     "Straw",
     "Styrofoam piece",
     "Unlabeled litter",
